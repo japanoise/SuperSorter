@@ -34,7 +34,9 @@ the program. Please use absolute paths. Example:
 ### From source
 
 Import the project into IntelliJ or Eclipse. Create jars in the usual way.
-The main class is, unsurprisingly, `club.seekrit.SuperSorter.Main`.
+You will need to create a fat jar or otherwise include the shit in lib,
+because ORACLE/QUALITY took out javax.xml. The main class is, unsurprisingly,
+`club.seekrit.SuperSorter.Main`.
 
 ### JAR
 
