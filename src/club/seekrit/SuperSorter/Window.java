@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Window {
+    private static final String VERSIONSTRING = "1.0.0";
     private Mover mover;
     private File rootDir;
     private File unsortedDir;
@@ -92,6 +93,13 @@ public class Window {
         prefMenu.add(menuItem);
 
         JMenu helpMenu = new JMenu("Help");
+        menuItem = new JMenuItem("About");
+        menuItem.addActionListener(a -> JOptionPane.showMessageDialog(frame,
+                "SuperSorter\n" +
+                "Version " + VERSIONSTRING + "\nUnleashed on an unsuspecting world by the Princess Japanoise",
+                "About",
+                JOptionPane.PLAIN_MESSAGE));
+        helpMenu.add(menuItem);
 
         mb.add(fileMenu);
         mb.add(prefMenu);
