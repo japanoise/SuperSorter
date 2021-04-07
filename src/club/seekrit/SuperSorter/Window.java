@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Window {
-    private static final String VERSIONSTRING = "1.0.0";
+    private static final String VERSIONSTRING = "1.0.1";
     private Mover mover;
     private File rootDir;
     private File unsortedDir;
@@ -36,6 +36,7 @@ public class Window {
     protected void run(File root, File unsorted) {
         rootDir = root;
         unsortedDir = unsorted;
+        mover = new Mover(rootDir);
         JOptionPane.showMessageDialog(null,
                 "This program operates destructively. There is no 'undo'."
                 + " It is highly recommended that you backup your files before continuing.",
@@ -81,7 +82,7 @@ public class Window {
         menuItem = new JMenuItem("Use waifuname-style renamer");
         menuItem.addActionListener(a -> {
             String waifuName = "";
-            while (waifuName == "") {
+            while (waifuName.equals("")) {
                 waifuName = JOptionPane.showInputDialog(frame, "Please enter the waifu's name");
                 if (waifuName == null) {
                     // User pressed cancel
@@ -118,7 +119,6 @@ public class Window {
             i = fc.showOpenDialog(null);
         } while (i != JFileChooser.APPROVE_OPTION);
         rootDir = fc.getSelectedFile();
-        mover = new Mover(rootDir);
         fc.setCurrentDirectory(rootDir);
 
         fc.setDialogTitle("Select a directory of unsorted images");
@@ -136,10 +136,8 @@ public class Window {
 
         JPanel panel = new JPanel();
 
-        GroupLayout groupLayout = new GroupLayout(panel);
-        panel.setLayout(groupLayout);
-        groupLayout.setAutoCreateGaps(true);
-        groupLayout.setAutoCreateContainerGaps(true);
+        GridLayout layout = new GridLayout(0, 1);
+        panel.setLayout(layout);
 
         LinkedList<JComponent> buttons = new LinkedList<>();
         JButton skipButton = new JButton("Skip this one");
@@ -159,17 +157,9 @@ public class Window {
             buttons.add(button);
         }
 
-        GroupLayout.ParallelGroup horizontalGroup = groupLayout.createParallelGroup(GroupLayout.Alignment.LEADING);
-        GroupLayout.SequentialGroup verticalGroup = groupLayout.createSequentialGroup();
-
         for (JComponent button : buttons) {
-            horizontalGroup.addComponent(button);
-            verticalGroup.addComponent(button);
+            panel.add(button);
         }
-        JComponent[] buttonsArr = new JComponent[buttons.size()];
-        groupLayout.linkSize(buttons.toArray(buttonsArr));
-        groupLayout.setHorizontalGroup(horizontalGroup);
-        groupLayout.setVerticalGroup(verticalGroup);
 
         return new JScrollPane(panel);
     }
