@@ -1,12 +1,10 @@
 package club.seekrit.SuperSorter;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -63,10 +61,10 @@ public class WaifuRenamer implements Renamer {
         try {
             sha1 = Os.calcSHA1(origFile).substring(0, 10).toLowerCase();
         } catch (NoSuchAlgorithmException e) {
-            System.err.println("No such algorithm - serious error!\n"+e.toString());
+            System.err.println("No such algorithm - serious error!\n"+ e);
             sha1 = "FFFFFFFFFF";
         } catch (IOException e) {
-            System.err.println(e.toString());
+            System.err.println(e);
             sha1 = "FFFFFFFFFF";
         }
         String ext = Os.extension(origFile);

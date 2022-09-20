@@ -246,7 +246,7 @@ public class Window {
             java.net.URL imgURL = file.toURI().toURL();
             return new ImageIcon(imgURL, description);
         } catch (MalformedURLException e) {
-            System.err.println("MalformedURLException when loading " + description + ": " + e.toString());
+            System.err.println("MalformedURLException when loading " + description + ": " + e);
             return null;
         }
     }
