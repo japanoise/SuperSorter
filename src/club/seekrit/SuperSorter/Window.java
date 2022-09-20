@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +26,7 @@ public class Window {
     private JLabel statusBar;
 
     private JFrame frame;
+    private Component sidebar;
 
     protected Window() {}
 
@@ -58,7 +61,8 @@ public class Window {
         frame.setJMenuBar(createMenuBar());
         Container pane = frame.getContentPane();
         pane.setLayout(new BorderLayout());
-        pane.add(createSidebar(), BorderLayout.LINE_START);
+        sidebar = createSidebar();
+        pane.add(sidebar, BorderLayout.LINE_START);
         pane.add(createImageBox(), BorderLayout.CENTER);
         statusBar = new JLabel("Ready.");
         pane.add(statusBar, BorderLayout.PAGE_END);
@@ -142,7 +146,29 @@ public class Window {
         LinkedList<JComponent> buttons = new LinkedList<>();
         JButton skipButton = new JButton("Skip this one");
         skipButton.addActionListener(a->{loadNextImage(); sorted++; updateStatusBar();});
+        JButton newDirButton = new JButton("New Directory");
+        newDirButton.addActionListener(a->{
+            String newPath = JOptionPane.showInputDialog(frame, "Name of new directory?", "New Directory",
+                    JOptionPane.QUESTION_MESSAGE);
+            if (newPath == null || newPath.equals("")) {
+                return;
+            }
+            String absoluteNewPath = rootDir.getAbsolutePath() + File.separator + newPath;
+            try {
+                Files.createDirectories(Paths.get(absoluteNewPath));
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Erorr", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            SwingUtilities.invokeLater(() -> {
+                frame.getContentPane().remove(sidebar);
+                sidebar = createSidebar();
+                frame.getContentPane().add(sidebar, BorderLayout.LINE_START);
+                frame.revalidate();
+            });
+        });
         buttons.add(skipButton);
+        buttons.add(newDirButton);
         buttons.add(new JLabel());
 
         List<String> subDirs = Arrays.stream(rootList).filter((s) -> Os.subToFile(rootDir, s).isDirectory()).sorted()
