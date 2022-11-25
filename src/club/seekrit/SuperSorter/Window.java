@@ -22,6 +22,7 @@ public class Window {
     private List<String> filesToSort;
     private Iterator<String> filesIterator;
     private int sorted = 0;
+    private int skipped = 0;
     private int totalFiles;
     private JLabel statusBar;
 
@@ -145,7 +146,7 @@ public class Window {
 
         LinkedList<JComponent> buttons = new LinkedList<>();
         JButton skipButton = new JButton("Skip this one");
-        skipButton.addActionListener(a->{loadNextImage(); sorted++; updateStatusBar();});
+        skipButton.addActionListener(a->{loadNextImage(); skipped++; updateStatusBar();});
         JButton newDirButton = new JButton("New Directory");
         newDirButton.addActionListener(a->{
             String newPath = JOptionPane.showInputDialog(frame, "Name of new directory?", "New Directory",
@@ -205,12 +206,22 @@ public class Window {
 
     private void updateStatusBar() {
         if (filesIterator.hasNext()) {
-            statusBar.setText(sorted + " items sorted, " + totalFiles + " total, "
-                    + (totalFiles - sorted) + " remaining.");
+            String sortedText = sorted == 0 ? "No items" :
+                    sorted == 1 ? "1 item" :
+                            sorted + " items";
+            String skippedText = skipped == 0 ? "no items" :
+                    skipped == 1 ? "1 item" :
+                            skipped + " items";
+            statusBar.setText(sortedText + " sorted, "
+                    + skippedText + " skipped, "
+                    + totalFiles + " total, "
+                    + (totalFiles - (sorted+skipped)) + " remaining.");
         } else if (sorted != totalFiles) {
             statusBar.setText("One file left to sort!");
+        } else if (skipped == 0) {
+            statusBar.setText(sorted + " files sorted! Time to brag!");
         } else {
-            statusBar.setText("All files sorted! Time to brag!");
+            statusBar.setText(sorted + " files sorted, " + skipped + " skipped.");
         }
     }
 
