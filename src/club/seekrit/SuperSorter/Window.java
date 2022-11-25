@@ -171,7 +171,8 @@ public class Window {
         buttons.add(newDirButton);
         buttons.add(new JLabel());
 
-        List<String> subDirs = Arrays.stream(rootList).filter((s) -> Os.subToFile(rootDir, s).isDirectory()).sorted()
+        List<String> subDirs = Arrays.stream(rootList).filter((s) -> Os.subToFile(rootDir, s).isDirectory()).sorted(
+                        Comparator.comparing(String::valueOf, String.CASE_INSENSITIVE_ORDER))
                 .collect(Collectors.toList());
         if (subDirs.size() == 0) {
             return new JLabel("Error: Rootdir has no subdirectories.");
