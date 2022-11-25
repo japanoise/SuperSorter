@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Window {
-    private static final String VERSION_STRING = "1.0.2";
+    private static final String VERSION_STRING = "1.1.0";
     private Mover mover;
     private File rootDir;
     private File unsortedDir;
