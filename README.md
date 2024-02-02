@@ -1,3 +1,5 @@
+**This program is not under active development; it has been superceded by a new program, [HyperSorter](https://github.com/japanoise/hypersorter)**
+
 # SuperSorter
 
 ![The program running](screenshot.png)
